@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Chat Example</title>
+  
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/libs/handlebars-1.0.0.js"></script>
+    <script src="/libs/ember.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  
+  <script src="/socket.js"></script>
+  <script src="/main.js"></script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body onload="init()">
+<script type="text/x-handlebars" data-template-name="login">
+<div id="q_login" class="panel panel-default">
+  <div class="panel-heading">
+  <h3 class="panel-title">Enter Username</h3>
+  </div>
+
+  <div class="panel-body">
+  <div class="input-group input-group-lg">
+	{{input type="text" class="form-control" value=username}}
+
+  <button id="q_enter" {{action "enter"}}  type="button" class="btn btn-default btn-info" data-loading-text="login in process....">Lets Play!</button>
+  </div>
+  </div>
+</div>
+</script>
+ 
+
+<script type="text/x-handlebars" data-template-name="room"> 
+  <div id="q_listpanel" class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Multiplayer Quiz</div>
+      <div class="panel-body">
+        <p>Some default panel content here. </p>
+      </div>
+      <!-- Table -->
+      <table id="q_userlist" class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player Name</th>
+          </tr>
+        </thead>
+        <tbody> 
+		{{#each model.users}}
+    		<tr><td>1</td><td>{{this}}</td></tr>
+  		{{/each}}          
+        </tbody>
+      </table>
+      
+      <br><button id="q_play" type="button" class="btn btn-default btn-info" data-loading-text="login in process....">Lets Play!</button>
+    </div>
+</script>    
+
+<script type="text/x-handlebars" data-template-name="mcq">     
+<div id="q_mcq" class="list-group">
+  <a class="list-group-item active">
+  Cras justo odio
+  </a>
+  <a class="list-group-item">Dapibus ac facilisis in</a>
+  <a class="list-group-item">Morbi leo risus</a>
+  <a class="list-group-item">Porta ac consectetur ac</a>
+  <a class="list-group-item">Vestibulum at eros</a>
+</div>
+</script>
+
+</body>
+</html>
