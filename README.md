@@ -4,9 +4,9 @@ MultiplayerQuiz
 Multi player quiz game developed using EmberJS, NodeJS, Bootstrap
 
 To deploy Game, you need to install following dependencies which is included in package.json:
-1) Socket.io
-2) ExpressJs
-3) Grunt - It performs repetitive tasks like minification, compilation, unit testing, linting, etc,
+1. Socket.io
+2. ExpressJs
+3. Grunt - It performs repetitive tasks like minification, compilation, unit testing, linting, etc,
 
 Step 1
 --------------
