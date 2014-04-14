@@ -1,0 +1,22 @@
+{
+  "name": "MultiplayerQuiz",
+  "version": "0.0.0",
+  "description": "MultiplayerQuiz ===============",
+  "main": "app.js",
+  "dependencies": {
+    "socket.io": "~0.9.16",
+    "grunt": "~0.4.4",
+    "express": "~3.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaibhavsilar/MultiplayerQuiz.git"
+  },
+  "author": "",
+  "license": "GPL",
+  "readmeFilename": "README.md"
+}
