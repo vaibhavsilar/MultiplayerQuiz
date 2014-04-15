@@ -4,6 +4,7 @@ MultiplayerQuiz
 Multi player quiz game developed using EmberJS, NodeJS, Bootstrap
 
 Prerequisite: Install NodeJS by following [these steps!](http://howtonode.org/how-to-install-nodejs)
+
 To deploy Game, you need to install following dependencies which is included in package.json:
 
 1. Socket.io
