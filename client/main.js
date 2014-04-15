@@ -3,30 +3,16 @@ var sock = new SocketConnection("http://localhost:","8000");
 function init()
 {
 	return;
-	$("#q_enter").click(function(){
-		var btn = $(this);
-	    btn.button('loading');
-	});
-
-	$("#q_play").click(function(){
-		var btn = $(this);
-	    socket.emit('play');
-	});
-	socket.on('onPlay', function (data) {
-		$("#q_listpanel").fadeOut(500);
-		$("#q_mcq").show();
-		$("#q_mcq").fadeIn(500);
-	});
 	$("#q_mcq a").click(function(e){
 		$("#q_mcq a").removeClass('active');
 		$(this).addClass('active');
 	});
-	
 }
 App = Ember.Application.create();
 App.Router.map(function() {
 	  this.resource('login');
 	  this.resource('room');
+	  this.resource('game');
 });
 App.IndexRoute = Ember.Route.extend({
 	redirect: function() {
@@ -47,6 +33,39 @@ App.RoomRoute = Ember.Route.extend({
 		    controller.initialized();
 	  }
 });
+App.GameRoute = Ember.Route.extend({
+	model:function(){
+		return jQuery.getJSON("/data/questions.json");
+	},setupController: function(controller, model) {
+		controller.set('model', model);
+		controller.setQuestion(0);
+	}
+});
+
+App.GameController = Ember.Controller.extend({
+	mcq:null,
+	setQuestion:function(index){
+		var m = this.get("model");
+		this.set("mcq",m.data.questions[index]);
+	},actions:{
+		sendToServer:function(d){
+			console.log(d.result);			
+		}
+	}
+});
+App.McqComponent = Ember.Component.extend({
+	didInsertElement:function()
+	{
+	},
+	actions:{
+		select:function(d){
+			var m = this.get("model");
+			
+			this.sendAction('select',{result:m.ans==d.index});
+			
+		}
+	}
+});
 App.LoginController = Ember.Controller.extend({
 	actions: {
 		enter: function() {
@@ -58,14 +77,6 @@ App.LoginController = Ember.Controller.extend({
   {
 	  this.transitionToRoute('room');
   }
-});
-
-App.RoomView = Ember.View.extend({
-	didInsertElement:function()
-	{
-		//var controller = this.get('controller');
-		//console.log(controller.get('model'))
-	}
 });
 
 App.RoomController = Ember.Controller.extend({
@@ -80,5 +91,25 @@ App.RoomController = Ember.Controller.extend({
 	{
 		var u = this.get("model");
 		u.users.pushObject(e.username);
+	},actions: {
+		enterGame: function() {
+			sock.play();
+			sock.addEventListener("onPlay",$.proxy(this.createGame,this));
+	    }
+	},createGame:function()
+	{
+		this.transitionToRoute('game');
+	}
+});
+
+App.OptionView = Ember.View.extend({
+	tagName:"a",
+	classNames:['list-group-item'],
+	click:function()
+	{
+		var index = this.get('_parentView.contentIndex');
+		this.get('controller').send('select', {index:index+1});
+		$("#q_mcq a").removeClass("active");
+		this.$().addClass("active");
 	}
 });

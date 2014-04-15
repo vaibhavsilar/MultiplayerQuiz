@@ -47,4 +47,12 @@ SocketConnection.prototype.joinRoom = function(rn)
 	var self = this;
 	this.s.emit('joinRoom', { name: rn,username:this.config.username});
 };
+SocketConnection.prototype.play = function()
+{
+	var self = this;
+	this.s.emit('play');
+	this.s.on('onPlay', function (data) {
+		self.dispatchEvent("onPlay",data);
+	});
+};
 SocketConnection.Event_ROOM_JOINED = "roomjoined";

@@ -23,7 +23,7 @@ Clone github project into your workspace
 Step 2
 --------------
 
-Enter into this directory and install dependencies
+Enter into this directory and install dependencies using npm(node package manager) which comes along with node
  
 ```
 >> npm install

@@ -44,7 +44,6 @@
       <div class="panel-body">
         <p>Some default panel content here. </p>
       </div>
-      <!-- Table -->
       <table id="q_userlist" class="table">
         <thead>
           <tr>
@@ -58,20 +57,21 @@
   		{{/each}}          
         </tbody>
       </table>
-      
-      <br><button id="q_play" type="button" class="btn btn-default btn-info" data-loading-text="login in process....">Lets Play!</button>
+      <br><button id="q_play" {{action "enterGame"}} type="button" class="btn btn-default btn-info" data-loading-text="login in process....">Lets Play!</button>
     </div>
-</script>    
+</script>
 
-<script type="text/x-handlebars" data-template-name="mcq">     
+<script type="text/x-handlebars" data-template-name="game">
+{{mcq model=mcq select="sendToServer"}}
+</script>
+
+<script type="text/x-handlebars" id="components/mcq">
+<div>{{model.q}}</div>
 <div id="q_mcq" class="list-group">
-  <a class="list-group-item active">
-  Cras justo odio
-  </a>
-  <a class="list-group-item">Dapibus ac facilisis in</a>
-  <a class="list-group-item">Morbi leo risus</a>
-  <a class="list-group-item">Porta ac consectetur ac</a>
-  <a class="list-group-item">Vestibulum at eros</a>
+
+{{#each model.o}}
+  {{#view App.OptionView}}{{this}}{{/view}}
+{{/each}}
 </div>
 </script>
 
