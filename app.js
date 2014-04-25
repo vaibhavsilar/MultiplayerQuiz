@@ -16,18 +16,16 @@ var rooms = new Array();
 var sockets = new Object();
 var room = new Room("superstar");
 io.sockets.on('connection', function (socket) {
-  console.log("client connected");
-     
+  console.log('A socket with sessionID ' + socket.id); 
   socket.on('joinRoom', function (data) {
 	createSocket(socket,data);  
 	socket.emit('onRoomJoined', { username: data.username });
-	
-	var u = room.getUsers();
-    for(var i=0;i<u.length;i++)
+
+    for(var i in sockets)
     {
-    	var s = sockets[u[i]];
-    	if(data.username!=u[i]){
-    	s.emit('onUserJoined', { username: data.username });
+    	var s = sockets[i];
+    	if(data.username!=s.username){
+    		s.sock.emit('onUserJoined', { username: data.username});
     	}
     }
   });
@@ -35,11 +33,23 @@ io.sockets.on('connection', function (socket) {
   socket.on('play', function (data) {
 	  socket.emit('onPlay');
   });
+  
+  socket.on('sendData', function (data) {
+	  console.log(data + " received ");
+	  if(data.result==true)
+	  {
+		var d = {msg:"check point",from:sockets[socket.id].username};
+		room.broadcast(d);
+	  }
+  });
 });
 
 function createSocket(s,d)
 {
-	sockets[d.username] = s;
+	var o = {};
+	o.sock = s;
+	o.username = d.username;
+	sockets[s.id] = o;
 	room.addUser(d.username);
 }
 
@@ -61,4 +71,12 @@ Room.prototype.removeUser = function()
 Room.prototype.getUsers = function()
 {
 	return this.clients;
+};
+Room.prototype.broadcast = function(data)
+{
+	for(var i in sockets)
+	{
+		var s = sockets[i];
+		s.sock.emit("sendData",data);
+	}
 };

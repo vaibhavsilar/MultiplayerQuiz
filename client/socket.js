@@ -41,6 +41,9 @@ SocketConnection.prototype.init = function(o)
 	this.s.on('onUserJoined', function (data) {
 		self.dispatchEvent("onUserJoined",data);
 	});	
+	this.s.on('sendData', function (data) {
+		self.dispatchEvent("onData",data);
+	});
 };
 SocketConnection.prototype.joinRoom = function(rn)
 {
@@ -54,5 +57,10 @@ SocketConnection.prototype.play = function()
 	this.s.on('onPlay', function (data) {
 		self.dispatchEvent("onPlay",data);
 	});
+};
+SocketConnection.prototype.sendData = function(d)
+{
+	var self = this;
+	this.s.emit('sendData',d);
 };
 SocketConnection.Event_ROOM_JOINED = "roomjoined";

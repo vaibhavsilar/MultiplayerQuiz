@@ -1,13 +1,5 @@
 var sock = new SocketConnection("http://localhost:","8000");
 
-function init()
-{
-	return;
-	$("#q_mcq a").click(function(e){
-		$("#q_mcq a").removeClass('active');
-		$(this).addClass('active');
-	});
-}
 App = Ember.Application.create();
 App.Router.map(function() {
 	  this.resource('login');
@@ -44,13 +36,22 @@ App.GameRoute = Ember.Route.extend({
 
 App.GameController = Ember.Controller.extend({
 	mcq:null,
+	qIndex:0,
+	init:function()
+	{
+		sock.addEventListener("onData",$.proxy(this.dataReceived,this));
+	},
 	setQuestion:function(index){
 		var m = this.get("model");
 		this.set("mcq",m.data.questions[index]);
 	},actions:{
 		sendToServer:function(d){
-			console.log(d.result);			
+			sock.sendData(d);
 		}
+	},dataReceived:function(data)
+	{
+		this.set("qIndex",this.qIndex+1);
+		this.setQuestion(this.qIndex);
 	}
 });
 App.McqComponent = Ember.Component.extend({
@@ -62,7 +63,6 @@ App.McqComponent = Ember.Component.extend({
 			var m = this.get("model");
 			
 			this.sendAction('select',{result:m.ans==d.index});
-			
 		}
 	}
 });
@@ -84,6 +84,7 @@ App.RoomController = Ember.Controller.extend({
 	initialized:function()
 	{
 		sock.addEventListener("onUserJoined",$.proxy(this.addUser,this));
+		
 		var d = this.get('controllers.login');
 		var u = this.get("model");
 		u.users.pushObject(d.username);
