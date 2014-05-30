@@ -1,6 +1,6 @@
 var sock = new SocketConnection("http://localhost:","8000");
 
-App = Ember.Application.create();
+var App = Ember.Application.create();
 App.Router.map(function() {
 	  this.resource('login');
 	  this.resource('room');
@@ -61,7 +61,9 @@ App.McqComponent = Ember.Component.extend({
 	actions:{
 		select:function(d){
 			var m = this.get("model");
-			
+			if(m.ans!=d.index){
+				//$('#myModal').modal('show');
+			}
 			this.sendAction('select',{result:m.ans==d.index});
 		}
 	}
@@ -81,13 +83,18 @@ App.LoginController = Ember.Controller.extend({
 
 App.RoomController = Ember.Controller.extend({
 	needs:['login'],
+	isAdmin:false,
 	initialized:function()
 	{
 		sock.addEventListener("onUserJoined",$.proxy(this.addUser,this));
+		sock.addEventListener("onPlay",$.proxy(this.createGame,this));
 		
 		var d = this.get('controllers.login');
 		var u = this.get("model");
 		u.users.pushObject(d.username);
+		if(d.username=="vbh"){
+			this.set('isAdmin',true);
+		}		
 	},addUser:function(e)
 	{
 		var u = this.get("model");
@@ -95,11 +102,18 @@ App.RoomController = Ember.Controller.extend({
 	},actions: {
 		enterGame: function() {
 			sock.play();
-			sock.addEventListener("onPlay",$.proxy(this.createGame,this));
+			
 	    }
 	},createGame:function()
 	{
 		this.transitionToRoute('game');
+	}
+});
+App.GameView = Ember.View.extend({
+	classNames:['Game-container'],
+	didInsertElement:function()
+	{
+		
 	}
 });
 

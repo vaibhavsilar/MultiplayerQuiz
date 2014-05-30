@@ -18,7 +18,7 @@ var room = new Room("superstar");
 io.sockets.on('connection', function (socket) {
   console.log('A socket with sessionID ' + socket.id); 
   socket.on('joinRoom', function (data) {
-	createSocket(socket,data);  
+	createSocket(socket,data);
 	socket.emit('onRoomJoined', { username: data.username });
 
     for(var i in sockets)
@@ -31,7 +31,12 @@ io.sockets.on('connection', function (socket) {
   });
   
   socket.on('play', function (data) {
-	  socket.emit('onPlay');
+	  for(var i in sockets)
+	    {
+	    	var s = sockets[i];
+	    	s.sock.emit('onPlay');
+	    }
+	  
   });
   
   socket.on('sendData', function (data) {

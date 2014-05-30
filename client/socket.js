@@ -44,6 +44,9 @@ SocketConnection.prototype.init = function(o)
 	this.s.on('sendData', function (data) {
 		self.dispatchEvent("onData",data);
 	});
+	this.s.on('onPlay', function (data) {
+		self.dispatchEvent("onPlay",data);
+	});	
 };
 SocketConnection.prototype.joinRoom = function(rn)
 {
@@ -54,9 +57,6 @@ SocketConnection.prototype.play = function()
 {
 	var self = this;
 	this.s.emit('play');
-	this.s.on('onPlay', function (data) {
-		self.dispatchEvent("onPlay",data);
-	});
 };
 SocketConnection.prototype.sendData = function(d)
 {

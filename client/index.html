@@ -42,7 +42,7 @@
       <!-- Default panel contents -->
       <div class="panel-heading">Multiplayer Quiz</div>
       <div class="panel-body">
-        <p>Some default panel content here. </p>
+        <p>Waiting for the players to join... </p>
       </div>
       <table id="q_userlist" class="table">
         <thead>
@@ -57,7 +57,9 @@
   		{{/each}}          
         </tbody>
       </table>
+		{{#if isAdmin}}
       <br><button id="q_play" {{action "enterGame"}} type="button" class="btn btn-default btn-info" data-loading-text="login in process....">Lets Play!</button>
+		{{/if}}
     </div>
 </script>
 
@@ -74,6 +76,24 @@
 {{/each}}
 </div>
 </script>
+
+<div id="myModal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Opps!!!</h4>
+      </div>
+      <div class="modal-body">
+        You are wrong. Wait for next Question.
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
