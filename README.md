@@ -7,8 +7,8 @@ Prerequisite: Install NodeJS by following [these steps!](http://howtonode.org/ho
 
 To deploy Game, you need to install following dependencies which is included in package.json:
 
-1. Socket.io
-2. ExpressJS
+1. Socket.io - Its a socket server.
+2. ExpressJS - Express gives you three cool features: routing, better request handlers, and views.
 3. Grunt - It performs repetitive tasks like minification, compilation, unit testing, linting, etc,
 
 
